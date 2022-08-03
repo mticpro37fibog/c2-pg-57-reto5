@@ -4,7 +4,7 @@ public class VehiculoDTO {
     private Integer matricula;
     private String nombre;
     private Float velocidad;
-    private Double longtitud;
+    private Double longitud;
 
     public Integer getMatricula() {
         return matricula;
@@ -30,11 +30,11 @@ public class VehiculoDTO {
         this.velocidad = velocidad;
     }
 
-    public Double getLongtitud() {
-        return longtitud;
+    public Double getLongitud() {
+        return longitud;
     }
 
-    public void setLongtitud(Double longtitud) {
-        this.longtitud = longtitud;
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 }

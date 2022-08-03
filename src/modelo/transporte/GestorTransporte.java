@@ -31,6 +31,24 @@ public class GestorTransporte {
         return false;
     }
 
+    public boolean actualizarTransporte(TransporteDTO dto) throws SQLException {
+
+        boolean respuesta = false;
+
+        if (dto.getVehiculo().getNombre() != null ||
+                dto.getVehiculo().getLongitud() != null ||
+                dto.getVehiculo().getLongitud() != null) {
+            respuesta = vehiculoDAO.actualizar(dto.getMatricula(), dto.getVehiculo());
+        }
+
+        if (dto.getPasajeros() != null ||
+                dto.getTripulantes() != null) {
+            respuesta = transporteDAO.actualizar(dto.getMatricula(), dto);
+        }
+
+        return respuesta;
+    }
+
     public TransporteDTO recuperarTransporte(Integer matricula) throws SQLException {
         TransporteDTO transporteDTO = null;
         VehiculoDTO vehiculoDTO = vehiculoDAO.recuperar(matricula);

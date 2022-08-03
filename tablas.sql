@@ -5,7 +5,7 @@ CREATE TABLE
         v_matricula INT PRIMARY KEY,
         v_nombre CHAR(50) NOT NULL,
         v_velocidad FLOAT NOT NULL,
-        v_longtitud DOUBLE NOT NULL
+        v_longitud DOUBLE NOT NULL
     );
 
 CREATE TABLE

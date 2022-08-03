@@ -196,7 +196,7 @@ public class GUI extends javax.swing.JFrame {
         try {
             if (defaultContent == null) {
                 defaultContent = mapper.readTree(
-                        "{\"vehiculo\":{\"matricula\":1,\"nombre\":\"Halcón Milenario\",\"velocidad\":75,\"longtitud\":34.37},\"tripulantes\":4,\"pasajeros\":6}");
+                        "{\"vehiculo\":{\"matricula\":1,\"nombre\":\"Halcón Milenario\",\"velocidad\":75,\"longitud\":34.37},\"tripulantes\":4,\"pasajeros\":6}");
             }
             if (solicitud.getText().isEmpty()) {
                 showMessage();

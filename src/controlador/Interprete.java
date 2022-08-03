@@ -50,10 +50,15 @@ public class Interprete {
             switch (operacion) {
                 case CREAR:
                     return gestorTransporte.registrarTransporte(dto) ? RESPUESTA_EXITOSA : RESPUESTA_FALLIDA;
+
+                case ACTUALIZAR:
+                    return gestorTransporte.actualizarTransporte(dto) ? RESPUESTA_EXITOSA
+                            : RESPUESTA_FALLIDA;
+
                 case ELIMINAR:
                     return gestorTransporte.eliminarTransporte(dto.getMatricula()) ? RESPUESTA_EXITOSA
                             : RESPUESTA_FALLIDA;
-                case RECUPERAR:
+                default:
                     // Si tiene ID
                     if (dto.getMatricula() != null) {
                         TransporteDTO transporteDTO = gestorTransporte
@@ -61,17 +66,11 @@ public class Interprete {
                         if (transporteDTO != null) {
                             return mapeador.writeValueAsString(transporteDTO);
                         }
+                        return RESPUESTA_FALLIDA;
                     } else {
-                        TransporteDTO transporteDTO = gestorTransporte
-                                .recuperarTransporte(dto.getMatricula());
-                        if (transporteDTO != null) {
-                            return mapeador.writeValueAsString(transporteDTO);
-                        }
+                        return mapeador.writeValueAsString(gestorTransporte.recuperarTransportes());
                     }
-
-                    return RESPUESTA_FALLIDA;
             }
-            return RESPUESTA_FALLIDA;
         } catch (Exception ex) {
             throw new RetoException("No es posible procesar la petición", ex);
         }
