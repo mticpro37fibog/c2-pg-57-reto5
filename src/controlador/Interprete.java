@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import comun.Entidad;
 import comun.Operacion;
 import comun.RetoException;
+import modelo.ligero.GestorLigeros;
 import modelo.transporte.GestorTransporte;
 import modelo.transporte.TransporteDTO;
 
@@ -23,12 +24,18 @@ public class Interprete {
     private ObjectMapper mapeador;
 
     private GestorTransporte gestorTransporte;
+    private GestorLigeros gestorLigeros;
 
     public Interprete(String nombre) throws RetoException {
         try {
-            conexion = DriverManager.getConnection("jdbc:sqlite:" + nombre);
+            // conexion = DriverManager.getConnection("jdbc:sqlite:" + nombre);
+            String dbURL = "jdbc:mysql://127.0.0.1:3306/" + nombre;
+            String username = "test";
+            String password = "test";
+            conexion = DriverManager.getConnection(dbURL, username, password);
             mapeador = new ObjectMapper();
             gestorTransporte = new GestorTransporte(conexion);
+            gestorLigeros = new GestorLigeros(conexion);
         } catch (SQLException ex) {
             throw new RetoException("No se puede establecer conexión", ex);
         }
@@ -38,6 +45,8 @@ public class Interprete {
         switch (entidad) {
             case TRANSPORTE:
                 return procesarTransporte(operacion, json);
+            case LIGERO:
+                return procesarLigeros(operacion, json);
             default:
                 throw new RetoException("No Existe la tabla",
                         new UnsupportedOperationException("Operación No Implementada"));
@@ -76,6 +85,10 @@ public class Interprete {
         }
     }
 
+    private String procesarLigeros(Operacion operacion, String json) throws RetoException {
+        throw new UnsupportedOperationException("Metodo no implementado");
+    }
+    
     public void listo() {
         try {
             if (conexion != null)

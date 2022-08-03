@@ -25,8 +25,8 @@ public class GestorTransporte {
     }
 
     public boolean eliminarTransporte(Integer matricula) throws SQLException {
-        if (vehiculoDAO.remover(matricula)) {
-            return transporteDAO.remover(matricula);
+        if (transporteDAO.remover(matricula)) {
+            return vehiculoDAO.remover(matricula);
         }
         return false;
     }

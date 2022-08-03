@@ -69,16 +69,16 @@ public class GUI extends javax.swing.JFrame {
 
         comando.add(crear);
         crear.setSelected(true);
-        crear.setText("Crear");
+        crear.setText("Crear (C)");
 
         comando.add(recuperar);
-        recuperar.setText("Recuperar");
+        recuperar.setText("Recuperar (R)");
 
         comando.add(actualizar);
-        actualizar.setText("Actualizar");
+        actualizar.setText("Actualizar (U)");
 
         comando.add(eliminar);
-        eliminar.setText("Eliminar");
+        eliminar.setText("Eliminar (D)");
 
         entidad.add(cliente);
         cliente.setText("Cliente");

@@ -1,5 +1,3 @@
--- SQLite
-
 CREATE TABLE
     vehiculo(
         v_matricula INT PRIMARY KEY,
