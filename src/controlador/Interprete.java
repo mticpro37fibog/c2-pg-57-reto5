@@ -9,7 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import comun.Entidad;
 import comun.Operacion;
 import comun.RetoException;
+import modelo.capitan.CapitanDTO;
+import modelo.capitan.GestorCapitanes;
 import modelo.ligero.GestorLigeros;
+import modelo.ligero.LigeroDTO;
 import modelo.transporte.GestorTransporte;
 import modelo.transporte.TransporteDTO;
 
@@ -24,7 +27,10 @@ public class Interprete {
     private ObjectMapper mapeador;
 
     private GestorTransporte gestorTransporte;
+
     private GestorLigeros gestorLigeros;
+
+    private GestorCapitanes gestorCapitanes;
 
     public Interprete(String nombre) throws RetoException {
         try {
@@ -36,6 +42,7 @@ public class Interprete {
             mapeador = new ObjectMapper();
             gestorTransporte = new GestorTransporte(conexion);
             gestorLigeros = new GestorLigeros(conexion);
+            gestorCapitanes = new GestorCapitanes(conexion, gestorTransporte);
         } catch (SQLException ex) {
             throw new RetoException("No se puede establecer conexión", ex);
         }
@@ -47,6 +54,8 @@ public class Interprete {
                 return procesarTransporte(operacion, json);
             case LIGERO:
                 return procesarLigeros(operacion, json);
+            case CAPITAN:
+                return procesarCapitan(operacion, json);
             default:
                 throw new RetoException("No Existe la tabla",
                         new UnsupportedOperationException("Operación No Implementada"));
@@ -86,9 +95,64 @@ public class Interprete {
     }
 
     private String procesarLigeros(Operacion operacion, String json) throws RetoException {
-        throw new UnsupportedOperationException("Metodo no implementado");
+        try {
+            LigeroDTO dto = mapeador.readValue(json, LigeroDTO.class);
+            switch (operacion) {
+                case CREAR:
+                    return gestorLigeros.registrarLigero(dto) ? RESPUESTA_EXITOSA : RESPUESTA_FALLIDA;
+
+                case ACTUALIZAR:
+                    return gestorLigeros.actualizarLigero(dto) ? RESPUESTA_EXITOSA
+                            : RESPUESTA_FALLIDA;
+
+                case ELIMINAR:
+                    return gestorLigeros.eliminarLigero(dto.getMatricula()) ? RESPUESTA_EXITOSA
+                            : RESPUESTA_FALLIDA;
+                default:
+                    // Si tiene ID
+                    if (dto.getMatricula() != null) {
+                        LigeroDTO ligeroDTO = gestorLigeros.recuperarLigero(dto.getMatricula());
+                        if (ligeroDTO != null) {
+                            return mapeador.writeValueAsString(ligeroDTO);
+                        }
+                        return RESPUESTA_FALLIDA;
+                    } else {
+                        return mapeador.writeValueAsString(gestorLigeros.recuperarLigeros());
+                    }
+            }
+        } catch (Exception ex) {
+            throw new RetoException("No es posible procesar la petición", ex);
+        }
     }
-    
+
+    private String procesarCapitan(Operacion operacion, String json) throws RetoException {
+        try {
+            CapitanDTO dto = mapeador.readValue(json, CapitanDTO.class);
+            switch (operacion) {
+                case CREAR:
+                    return gestorCapitanes.registrarCapitan(dto) ? RESPUESTA_EXITOSA : RESPUESTA_FALLIDA;
+
+                case ACTUALIZAR:
+                    return gestorCapitanes.actualizarCapitan(dto) ? RESPUESTA_EXITOSA
+                            : RESPUESTA_FALLIDA;
+
+                case ELIMINAR:
+                    return gestorCapitanes.eliminarCapitan(dto.getLicencia()) ? RESPUESTA_EXITOSA
+                            : RESPUESTA_FALLIDA;
+                default:
+                    // Si tiene ID
+                    if (dto.getLicencia() != null) {
+                        return mapeador.writeValueAsString(
+                                gestorCapitanes.recuperarCapitan(dto.getLicencia()));
+                    } else {
+                        return mapeador.writeValueAsString(gestorCapitanes.recuperarCapitanes());
+                    }
+            }
+        } catch (Exception ex) {
+            throw new RetoException("No es posible procesar la petición", ex);
+        }
+    }
+
     public void listo() {
         try {
             if (conexion != null)

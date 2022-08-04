@@ -18,22 +18,52 @@ public class GestorLigeros {
     }
 
     public boolean registrarLigero(LigeroDTO dto) throws SQLException {
-       throw new UnsupportedOperationException("Metodo no implementado");
+        if (vehiculoDAO.crear(dto.getVehiculo())) {
+            return ligeroDAO.crear(dto);
+        }
+        return false;
     }
 
     public boolean eliminarLigero(Integer matricula) throws SQLException {
-        throw new UnsupportedOperationException("Metodo no implementado");
+        if (ligeroDAO.remover(matricula)) {
+            return vehiculoDAO.remover(matricula);
+        }
+        return false;
     }
 
     public boolean actualizarLigero(LigeroDTO dto) throws SQLException {
-        throw new UnsupportedOperationException("Metodo no implementado");
+        boolean respuesta = false;
+
+        if (dto.getVehiculo().getNombre() != null ||
+                dto.getVehiculo().getLongitud() != null ||
+                dto.getVehiculo().getVelocidad() != null) {
+            respuesta = vehiculoDAO.actualizar(dto.getMatricula(), dto.getVehiculo());
+        }
+
+        if (dto.getAndroide() != null ||
+                dto.getColor() != null) {
+            respuesta = ligeroDAO.actualizar(dto.getMatricula(), dto);
+        }
+
+        return respuesta;
     }
 
     public LigeroDTO recuperarLigero(Integer matricula) throws SQLException {
-        throw new UnsupportedOperationException("Metodo no implementado");
+        LigeroDTO ligeroDTO = null;
+        VehiculoDTO vehiculoDTO = vehiculoDAO.recuperar(matricula);
+        if (vehiculoDTO != null) {
+            ligeroDTO = ligeroDAO.recuperar(matricula);
+            ligeroDTO.setVehiculo(vehiculoDTO);
+        }
+        return ligeroDTO;
     }
 
     public List<LigeroDTO> recuperarLigeros() throws SQLException {
-        throw new UnsupportedOperationException("Metodo no implementado");
+        List<LigeroDTO> respuesta = ligeroDAO.recuperarTodo();
+        for (LigeroDTO ligeroDTO : respuesta) {
+            ligeroDTO.setVehiculo(
+                    vehiculoDAO.recuperar(ligeroDTO.getMatricula()));
+        }
+        return respuesta;
     }
 }

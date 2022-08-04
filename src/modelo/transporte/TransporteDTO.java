@@ -1,18 +1,8 @@
 package modelo.transporte;
 
-import modelo.VehiculoDTO;
+import modelo.VehiculoBaseDTO;
 
-public class TransporteDTO {
-    private VehiculoDTO vehiculo;
-
-    public VehiculoDTO getVehiculo() {
-        return vehiculo;
-    }
-
-    public void setVehiculo(VehiculoDTO vehiculo) {
-        this.vehiculo = vehiculo;
-    }
-
+public class TransporteDTO extends VehiculoBaseDTO {
     private Integer tripulantes;
     private Integer pasajeros;
 
@@ -30,19 +20,5 @@ public class TransporteDTO {
 
     public void setPasajeros(Integer pasajeros) {
         this.pasajeros = pasajeros;
-    }
-
-    public Integer getMatricula() {
-        if (vehiculo != null) {
-            return vehiculo.getMatricula();
-        }
-        return null;
-    }
-
-    public void setMatricula(Integer matricula) {
-        if (vehiculo == null) {
-            vehiculo = new VehiculoDTO();
-        }
-        vehiculo.setMatricula(matricula);
     }
 }

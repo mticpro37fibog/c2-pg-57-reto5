@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import modelo.AbstractDAO;
@@ -18,20 +19,32 @@ public class LigeroDAO extends AbstractDAO<LigeroDTO> {
 
     @Override
     protected void fijarColumnas(PreparedStatement statement, LigeroDTO dto) throws SQLException {
-        // TODO Auto-generated method stub
-        
+        statement.setInt(1, dto.getMatricula());
+        statement.setString(2, dto.getColor());
+        statement.setString(3, dto.getAndroide());
     }
 
     @Override
     protected LigeroDTO ensamblar(ResultSet result) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        LigeroDTO dto = new LigeroDTO();
+        dto.setMatricula(result.getInt(1));
+        dto.setColor(result.getString(2));
+        dto.setAndroide(result.getString(3));
+        return dto;
     }
 
     @Override
     protected List<String> camposActualizacion(LigeroDTO dto) {
-        // TODO Auto-generated method stub
-        return null;
+        List<String> campos = new ArrayList<>();
+
+        if (dto.getColor() != null) {
+            campos.add("l_color = \"" + dto.getColor() + "\"");
+        }
+
+        if (dto.getAndroide() != null) {
+            campos.add("l_androide = \"" + dto.getAndroide() + "\"");
+        }
+        return campos;
     }
-    
+
 }

@@ -37,7 +37,7 @@ public class GestorTransporte {
 
         if (dto.getVehiculo().getNombre() != null ||
                 dto.getVehiculo().getLongitud() != null ||
-                dto.getVehiculo().getLongitud() != null) {
+                dto.getVehiculo().getVelocidad() != null) {
             respuesta = vehiculoDAO.actualizar(dto.getMatricula(), dto.getVehiculo());
         }
 
@@ -63,7 +63,7 @@ public class GestorTransporte {
         List<TransporteDTO> respuesta = transporteDAO.recuperarTodo();
         for (TransporteDTO transporteDTO : respuesta) {
             transporteDTO.setVehiculo(
-                    vehiculoDAO.recuperar(transporteDTO.getVehiculo().getMatricula()));
+                    vehiculoDAO.recuperar(transporteDTO.getMatricula()));
         }
 
         return respuesta;
